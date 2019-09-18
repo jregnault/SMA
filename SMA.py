@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import argparse
+from configparser import ConfigParser
 
 import View
 import Agent
@@ -24,20 +24,12 @@ class SMA:
         pass
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    # Config
-    parser.add_argument("agents", help="the amount of agents to create. default to 10", default=10, type=int)
-    parser.add_argument("--resolution", help="the resolution of the windows in the format <width>x<height>. default to 800x600.", default="800x600")
-    parser.add_argument("--isToric", help="If activated, the agents will teleport to the opposite border when reaching one.", action="store_true")
-
-    parser.parse_args()
-    width = 800
-    height = 600
-    isToric = False
+    config = ConfigParser()
+    config.read("config.ini")
 
     sma = SMA()
     view = View.View()
-    env = Environment.Environment(width,height,isToric)
+    env = Environment.Environment(config.getint("settings","gridSizeX"), config.getint("settings","gridSizeY"), config.getboolean("settings","torus"))
     sma.register(view)
 
     stay_alive = True

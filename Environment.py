@@ -4,9 +4,9 @@ import Agent
 
 class Environment:
 
-    def __init__(self, width=100, height=100, isToric=False):
-        self.space = np.empty((width, height), dtype=Agent.Agent , order='F')
-        self.isToric = isToric
+    def __init__(self, gridSizeX=100, gridSizeY=100, torus=False):
+        self.space = np.empty((gridSizeX, gridSizeY), dtype=Agent.Agent , order='F')
+        self.torus = torus
         self.agents = []
     
     def addAgent(self, agent, x, y):
