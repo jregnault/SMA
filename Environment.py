@@ -15,3 +15,15 @@ class Environment:
             self.agents.append(agent)
         else:
             raise ValueError("The position is already taken")
+    
+    def getAgent(self, x, y):
+        pass
+    
+    def isEmpty(self, x, y):
+        pass
+
+    def getHeight(self):
+        return len(self.space[0])
+    
+    def getWidth(self):
+        return len(self.space)
