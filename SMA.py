@@ -26,7 +26,21 @@ class SMA:
 if __name__ == "__main__":
     config = ConfigParser()
     config.read("config.ini")
-
+    torus = config.getboolean("settings","torus")
+    gridSizeX = config.getint("settings","gridsizex")
+    gridSizeY = config.getint("settings","gridsizey")
+    canvasSizeX = config.getint("settings","canvassizex")
+    canvasSizeY = config.getint("settings","canvassizey")
+    boxSize = config.getint("settings","boxsize")
+    delay = config.getint("settings","delay")
+    scheduling = config.get("settings","scheduling")
+    nbTicks = config.getint("settings","nbticks")
+    grid = config.getboolean("settings","grid")
+    trace = config.getboolean("settings","trace")
+    seed = config.getint("settings","seed")
+    refresh = config.getint("settings","refresh")
+    nbParticles = config.getint("settings","nbparticles")
+    
     sma = SMA()
     view = View.View()
     env = Environment.Environment(config.getint("settings","gridSizeX"), config.getint("settings","gridSizeY"), config.getboolean("settings","torus"))
