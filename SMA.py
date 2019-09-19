@@ -42,7 +42,7 @@ if __name__ == "__main__":
     nbParticles = config.getint("settings","nbparticles")
     
     sma = SMA()
-    view = View.View()
+    view = View.View(canvasSizeX,canvasSizeY,boxSize,grid)
     env = Environment.Environment(config.getint("settings","gridSizeX"), config.getint("settings","gridSizeY"), config.getboolean("settings","torus"))
     sma.register(view)
 

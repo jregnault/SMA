@@ -7,6 +7,7 @@ class View:
     def __init__(self, canvasSizeX, canvasSizeY, boxSize, grid):
         self.canvasSizeX = canvasSizeX
         self.canvasSizeY = canvasSizeY
+        self.boxSize = boxSize
         pygame.init()
         self.screen = pygame.display.set_mode((canvasSizeX,canvasSizeY))
         pygame.display.set_caption("S.M.A.")
@@ -32,7 +33,7 @@ class View:
         self.background.blit(self.grid, (0,0))
 
     def drawAgent(self, agent):
-        agent = pygame.Surface((self.background.get_width()/self.canvasSizeX,self.background.get_height()/self.canvasSizeY))
+        agent = pygame.Surface((self.boxSize,self.boxSize))
         agent = agent.convert_alpha()
         agent.set_alpha(255)
 
