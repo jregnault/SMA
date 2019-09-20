@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 import Agent
 
@@ -14,7 +15,8 @@ class Environment:
             self.space[y][x] = agent
             self.agents.append(agent)
         else:
-            raise ValueError("The position is already taken")
+            self.addAgent(agent,random.randint(0,self.getWidth()-1),random.randint(0,self.getHeight()-1))
+
     
     def getAgent(self, x, y):
         pass
