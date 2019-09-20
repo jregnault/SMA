@@ -1,53 +1,77 @@
 import pygame
 from pygame.locals import *
 from configparser import ConfigParser
+import random
+import time
 
 import View
 import Agent
 import Environment
 
 class SMA:
-    def __init__(self):
+    def __init__(self, env, view, nbParticles, scheduling):
         self.observers = []
+        self.env = env
+        self.view = view
+        self.scheduling = scheduling
+        self.agentList = []
+        for _ in range(0,nbParticles):
+            self.agentList.append(
+                Agent.Agent(
+                    self.env,
+                    random.randint(0,self.env.getWidth()-1),
+                    random.randint(0,self.env.getHeight()-1)
+                )
+            )
 
     def register(self,observer):
         self.observers.append(observer)
 
     def notify(self):
         for o in self.observers:
-            o.update()
+            o.update(self)
     
-    def init(self):
-        pass
+    def run(self, config):
+        nbTours = config.getint("simulation","nbticks")
+        delay = config.getint("simulation","delay")
+        refresh = config.getint("simulation","refresh")
+        stay_alive = False
+        tick = 0
+        if nbTours == 0:
+            stay_alive = True
+        while stay_alive or tick < nbTours:
+            self.runTurn()
+            self.notify()
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    stay_alive = False
+            if (tick % refresh == 0):
+                self.notify()
     
-    def run(self, nbTours):
-        pass
+    def runTurn(self):
+        if self.scheduling == "fair":
+            for a in sma.agentList:
+                a.decide()
 
 if __name__ == "__main__":
     config = ConfigParser()
     config.read("config.ini")
-    torus = config.getboolean("settings","torus")
-    gridSizeX = config.getint("settings","gridsizex")
-    gridSizeY = config.getint("settings","gridsizey")
-    canvasSizeX = config.getint("settings","canvassizex")
-    canvasSizeY = config.getint("settings","canvassizey")
-    boxSize = config.getint("settings","boxsize")
-    delay = config.getint("settings","delay")
-    scheduling = config.get("settings","scheduling")
-    nbTicks = config.getint("settings","nbticks")
-    grid = config.getboolean("settings","grid")
-    trace = config.getboolean("settings","trace")
-    seed = config.getint("settings","seed")
-    refresh = config.getint("settings","refresh")
-    nbParticles = config.getint("settings","nbparticles")
-    
-    sma = SMA()
-    view = View.View(canvasSizeX,canvasSizeY,boxSize,grid)
-    env = Environment.Environment(config.getint("settings","gridSizeX"), config.getint("settings","gridSizeY"), config.getboolean("settings","torus"))
-    sma.register(view)
 
-    stay_alive = True
-    while stay_alive:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                stay_alive = False
+    env = Environment.Environment(
+        config.getint("env","gridSizeX"),
+        config.getint("env","gridSizeY"),
+        config.getboolean("env","torus")
+    )
+
+    view = View.View(
+        env,
+        config.getint("view","canvassizex"),
+        config.getint("view","canvassizey"),
+        config.getint("view","boxsize"),
+        config.getboolean("view","grid")
+    )
+
+    sma = SMA(env,view,config.getint("simulation","nbparticles"), config.get("simulation","scheduling"))
+    sma.register(view)
+    sma.run(config)
+    

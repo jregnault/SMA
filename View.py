@@ -4,46 +4,75 @@ from pygame.locals import *
 import Agent
 
 class View:
-    def __init__(self, canvasSizeX, canvasSizeY, boxSize, grid):
+    def __init__(self, environment, canvasSizeX, canvasSizeY, boxSize, grid):
         self.canvasSizeX = canvasSizeX
         self.canvasSizeY = canvasSizeY
         self.boxSize = boxSize
+        self.grid = grid
+        self.environment = environment
         pygame.init()
         self.screen = pygame.display.set_mode((canvasSizeX,canvasSizeY))
         pygame.display.set_caption("S.M.A.")
     
     def drawBackground(self):
-        self.background = pygame.Surface(self.screen.get_size())
-        self.background = self.background.convert()
-        self.background.fill((250,250,250))
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        background.fill((250,250,250))
+        return background
 
     def drawGrid(self):
-        self.grid = pygame.Surface(self.screen.get_size())
-        self.grid = self.grid.convert()
-        self.grid.fill((250,250,250,255))
+        gridView = pygame.Surface(self.screen.get_size())
+        gridView = gridView.convert()
+        gridView.fill((250,250,250,255))
 
-        width = self.grid.get_width()
-        height = self.grid.get_height()
-        for i in range(0,width, width/self.canvasSizeX):
-            pygame.draw.line(self.grid, (0,0,0), (i,0), (i,height-1))
+        width = gridView.get_width()
+        height = gridView.get_height()
+        for i in range(0,width, int(width/self.environment.getWidth())):
+            pygame.draw.line(
+                gridView,
+                (0,0,0,0),
+                (i,0),
+                (i,height-1))
     
-        for j in range(0,height, height/self.canvasSizeY):
-            pygame.draw.line(self.grid, (0,0,0), (0,j), (width-1,j))
+        for j in range(0,height, int(height/self.environment.getHeight())):
+            pygame.draw.line(gridView, (0,0,0), (0,j), (width-1,j))
 
-        self.background.blit(self.grid, (0,0))
+        return gridView
 
     def drawAgent(self, agent):
-        agent = pygame.Surface((self.boxSize,self.boxSize))
-        agent = agent.convert_alpha()
-        agent.set_alpha(255)
+        agentView = pygame.Surface((self.boxSize,self.boxSize))
+        agentView = agentView.convert_alpha()
+        agentView.fill((0,0,0,0))
 
         if agent.isBouncing:
-            pygame.draw.circle(agent,(250,0,0,0),(agent.get_width()/2,agent.get_height()/2),agent.get_width()/2,width=0)
+            pygame.draw.circle(
+                agentView,
+                (250,0,0,255),
+                (int(agentView.get_width()/2), int(agentView.get_height()/2)),
+                int(agentView.get_width()/2),
+                0
+            )
         else:
-            pygame.draw.circle(agent,(0,0,0,0),(agent.get_width()/2,agent.get_height()/2),agent.get_width()/2,width=0)
+            pygame.draw.circle(
+                agentView,
+                (100,100,100,255),
+                (int(agentView.get_width()/2), int(agentView.get_height()/2)),
+                int(agentView.get_width()/2),
+                0)
         
-        self.background.blit(agent, (agent.posX * (self.background.get_width()/self.canvasSizeX), agent.posY * (self.background.get_height() / self.canvasSizeY)))
+        return agentView
 
     def update(self, observable):
-        self.screen.blit(self.background,(0,0))
+        background = self.drawBackground()
+        if self.grid:
+            gridView = self.drawGrid()
+            background.blit(gridView,(0,0))
+        for agent in observable.agentList:
+            agentView = self.drawAgent(agent)
+            background.blit(
+                agentView,
+                (agent.posX * self.boxSize, agent.posY * self.boxSize)
+            )
+
+        self.screen.blit(background,(0,0))
         pygame.display.flip()

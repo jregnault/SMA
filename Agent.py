@@ -11,13 +11,15 @@ class Agent:
         self.stepY = stepY
         self.color = color
         self.environment = environment
+        self.isBouncing = False
     
     def update(self):
         pass
 
     def decide(self):
-        if 0 <= (self.posX + self.stepX) < len(self.environment.getWidth()) and 0 <= (self.posY + self.stepY) < len(self.environment.getHeight()):
+        if 0 <= (self.posX + self.stepX) < self.environment.getWidth() and 0 <= (self.posY + self.stepY) < self.environment.getHeight():
             if self.environment.isEmpty(self.posX + self.stepX, self.posY + self.stepY):
+                self.isBouncing = False
                 self.move()
             else:
                 self.agentBounce(self.environment.getAgent(self.posX + self.stepX, self.posY + self.stepY))
@@ -29,6 +31,7 @@ class Agent:
         self.posY += self.stepY
 
     def wallBounce(self):
+        self.isBouncing = True
         self.color = (250,0,0,0)
         if self.posX == 0 or self.posX == self.environment.getWidth() - 1:
             self.stepX *= -1
@@ -36,6 +39,7 @@ class Agent:
             self.stepY *= -1
     
     def agentBounce(self, agent):
+        self.isBouncing = True
         self.color = (250,0,0,0)
         self.stepX, agent.stepX = agent.stepX, self.stepX
         self.stepY, agent.stepY = agent.stepY, self.stepY
