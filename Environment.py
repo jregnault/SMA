@@ -19,10 +19,10 @@ class Environment:
 
     
     def getAgent(self, x, y):
-        pass
+        return self.space[x][y]
     
     def isEmpty(self, x, y):
-        pass
+        return self.space[x][y] == None
 
     def getHeight(self):
         return len(self.space[0])
