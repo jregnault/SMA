@@ -33,7 +33,7 @@ class SMA:
     
     def run(self, config):
         nbTours = config.getint("simulation","nbticks")
-        delay = config.getint("simulation","delay")
+        delay = config.getfloat("simulation","delay")
         refresh = config.getint("simulation","refresh")
         stay_alive = False
         tick = 0
@@ -41,10 +41,10 @@ class SMA:
             stay_alive = True
         while stay_alive or tick < nbTours:
             self.runTurn()
-            self.notify()
             for event in pygame.event.get():
                 if event.type == QUIT:
                     stay_alive = False
+            time.sleep(delay)
             if (tick % refresh == 0):
                 self.notify()
     
