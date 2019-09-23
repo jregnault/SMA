@@ -17,6 +17,9 @@ class Agent:
         pass
 
     def decide(self):
+        neighbors = self.environment.getNeighborhood(self,2)
+        if neighbors == []:
+            
         if 0 <= (self.posX + self.stepX) < self.environment.getWidth() and 0 <= (self.posY + self.stepY) < self.environment.getHeight():
             if self.environment.isEmpty(self.posX + self.stepX, self.posY + self.stepY):
                 self.isBouncing = False
