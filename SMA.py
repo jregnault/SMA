@@ -34,6 +34,7 @@ class SMA:
             o.update(self)
     
     def run(self, config):
+        self.notify()
         nbTours = config.getint("simulation","nbticks")
         delay = config.getfloat("simulation","delay")
         refresh = config.getint("simulation","refresh")

@@ -21,7 +21,14 @@ class Environment:
         self.space[x][y] = None
 
     def move(self,agent):
-        self.add(agent, agent.posX + agent.stepX, agent.posY + agent.stepY)
+        if self.torus:
+            if agent.stepX >= 0:
+                if agent.stepY >= 0:
+                    self.add(agent, agent.posX + agent.stepX % self.width, agent.posY + agent.stepY % self.height)
+                else:
+                    self.add(agent, agent.posX + agent.stepX % self.width, agent.posY + agent.stepY % self.height)
+        else:
+            self.add(agent, agent.posX + agent.stepX, agent.posY + agent.stepY)
         self.remove(agent.posX, agent.posY)
 
     def get(self, x, y):
