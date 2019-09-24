@@ -19,8 +19,8 @@ class SMA:
             self.agentList.append(
                 Agent.Agent(
                     self.env,
-                    random.randint(0,self.env.getWidth()-1),
-                    random.randint(0,self.env.getHeight()-1)
+                    random.randint(0,self.env.width-1),
+                    random.randint(0,self.env.height-1)
                 )
             )
 

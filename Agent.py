@@ -25,17 +25,17 @@ class Agent:
                 self.bounce(self.environment.get(self.posX + self.stepX, self.posY + self.stepY))
 
     def move(self):
-        self.color = (150,150,150,0)
+        self.color = (150,150,150,255)
         self.environment.move(self)
         self.posX += self.stepX
         self.posY += self.stepY
 
     def bounce(self, target=None):
-        self.color = (250,0,0,0)
+        self.color = (250,0,0,255)
         if target == None:
-            if self.posX == 0 or self.posX == self.environment.getWidth() - 1:
+            if self.posX == 0 or self.posX == self.environment.width - 1:
                 self.stepX *= -1
-            if self.posY == 0 or self.posY == self.environment.getHeight() - 1:
+            if self.posY == 0 or self.posY == self.environment.height - 1:
                 self.stepY *= -1
         else:
             self.stepX, target.stepX = target.stepX, self.stepX

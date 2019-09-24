@@ -27,14 +27,14 @@ class View:
 
         width = gridView.get_width()
         height = gridView.get_height()
-        for i in range(0,width, int(width/self.environment.getWidth())):
+        for i in range(0,width, int(width/self.environment.width)):
             pygame.draw.line(
                 gridView,
                 (0,0,0,0),
                 (i,0),
                 (i,height-1))
     
-        for j in range(0,height, int(height/self.environment.getHeight())):
+        for j in range(0,height, int(height/self.environment.height)):
             pygame.draw.line(gridView, (0,0,0), (0,j), (width-1,j))
 
         return gridView
@@ -44,21 +44,12 @@ class View:
         agentView = agentView.convert_alpha()
         agentView.fill((0,0,0,0))
 
-        if agent.isBouncing:
-            pygame.draw.circle(
-                agentView,
-                (250,0,0,255),
-                (int(agentView.get_width()/2), int(agentView.get_height()/2)),
-                int(agentView.get_width()/2),
-                0
-            )
-        else:
-            pygame.draw.circle(
-                agentView,
-                (100,100,100,255),
-                (int(agentView.get_width()/2), int(agentView.get_height()/2)),
-                int(agentView.get_width()/2),
-                0)
+        pygame.draw.circle(
+            agentView,
+            agent.color,
+            (int(agentView.get_width()/2), int(agentView.get_height()/2)),
+            int(agentView.get_width()/2),
+            0)
         
         return agentView
 
