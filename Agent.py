@@ -14,10 +14,15 @@ class Agent:
 
     def willHitAWall(self):
         return (self.posX == 0 and self.stepX < 0) or (self.posX == self.environment.width-1 and self.stepX > 0) or (self.posY == 0 and self.stepY < 0) or (self.posY == self.environment.height-1 and self.stepY > 0)
-            
 
     def decide(self):
-        pass
+        if self.willHitAWall():
+            self.bounce()
+        else:
+            try:
+                self.move()
+            except ValueError as _:
+                self.bounce(self.environment.get(self.posX + self.stepX, self.posY + self.stepY))
 
     def move(self):
         self.color = (150,150,150,0)
