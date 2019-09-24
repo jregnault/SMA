@@ -20,6 +20,10 @@ class Environment:
     def remove(self, x, y):
         self.space[x][y] = None
 
+    def move(self,agent):
+        self.add(agent, agent.posX + agent.stepX, agent.posY + agent.stepY)
+        self.remove(agent.posX, agent.posY)
+
     def get(self, x, y):
         return self.space[x][y]
     
