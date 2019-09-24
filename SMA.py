@@ -57,17 +57,24 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read("config.ini")
 
+    gridSizeX = config.getint("env","gridSizeX")
+    gridSizeY = config.getint("env","gridSizeY")
+
     env = Environment.Environment(
-        config.getint("env","gridSizeX"),
-        config.getint("env","gridSizeY"),
+        gridSizeX,
+        gridSizeY,
         config.getboolean("env","torus")
     )
 
+    canvasSizeX = config.getint("view","canvassizex")
+    canvasSizeY = config.getint("view","canvassizey")
+    boxSize = (canvasSizeX/gridSizeX, canvasSizeY/gridSizeY)
+
     view = View.View(
         env,
-        config.getint("view","canvassizex"),
-        config.getint("view","canvassizey"),
-        config.getint("view","boxsize"),
+        canvasSizeX,
+        canvasSizeY,
+        boxSize,
         config.getboolean("view","grid")
     )
 

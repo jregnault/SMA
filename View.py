@@ -40,7 +40,7 @@ class View:
         return gridView
 
     def drawAgent(self, agent):
-        agentView = pygame.Surface((self.boxSize,self.boxSize))
+        agentView = pygame.Surface(self.boxSize)
         agentView = agentView.convert_alpha()
         agentView.fill((0,0,0,0))
 
@@ -62,7 +62,7 @@ class View:
             agentView = self.drawAgent(agent)
             background.blit(
                 agentView,
-                (agent.posX * self.boxSize, agent.posY * self.boxSize)
+                (agent.posX * self.boxSize[0], agent.posY * self.boxSize[1])
             )
 
         self.screen.blit(background,(0,0))
