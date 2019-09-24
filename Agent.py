@@ -12,6 +12,9 @@ class Agent:
         self.color = color
         self.environment = environment
 
+    def isAgainstAWall(self):
+        return self.posX == self.environment.width-1 or self.posX == 0 or self.posY == 0 or self.posY == self.environment.height-1
+
     def decide(self):
         pass
 
