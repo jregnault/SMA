@@ -20,7 +20,9 @@ class SMA:
                 Agent.Agent(
                     self.env,
                     random.randint(0,self.env.width-1),
-                    random.randint(0,self.env.height-1)
+                    random.randint(0,self.env.height-1),
+                    random.randint(-1,1),
+                    random.randint(-1,1)
                 )
             )
 
@@ -41,17 +43,28 @@ class SMA:
             stay_alive = True
         while stay_alive or tick < nbTours:
             self.runTurn()
+            tick += 1
+            print("Tick;" + str(tick) + "\n")
+
             for event in pygame.event.get():
                 if event.type == QUIT:
                     stay_alive = False
+                    
             time.sleep(delay)
             if (tick % refresh == 0):
                 self.notify()
     
     def runTurn(self):
         if self.scheduling == "fair":
-            for a in sma.agentList:
+            random.shuffle(self.agentList)
+            for a in self.agentList:
                 a.decide()
+        elif self.scheduling == "sequential":
+            for a in self.agentList:
+                a.decide
+        elif self.scheduling == "random":
+            a = random.choice(self.agentList)
+            a.decide()
 
 if __name__ == "__main__":
     config = ConfigParser()

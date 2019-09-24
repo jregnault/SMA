@@ -44,11 +44,13 @@ class View:
         agentView = agentView.convert_alpha()
         agentView.fill((0,0,0,0))
 
+        particleSize = min(self.boxSize[0], self.boxSize[1])
+
         pygame.draw.circle(
             agentView,
             agent.color,
             (int(agentView.get_width()/2), int(agentView.get_height()/2)),
-            int(agentView.get_width()/2),
+            int(particleSize/2),
             0)
         
         return agentView

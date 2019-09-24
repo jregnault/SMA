@@ -4,7 +4,7 @@ import Environment
 
 class Agent:
 
-    def __init__(self, environment, posX = 0, posY = 0, stepX = random.randint(-1,1), stepY = random.randint(-1,1), color = (150,150,150,0)):
+    def __init__(self, environment, posX = 0, posY = 0, stepX = 0, stepY = 0, color = (150,150,150,0)):
         self.posX = posX
         self.posY = posY
         self.stepX = stepX
@@ -16,7 +16,7 @@ class Agent:
         return (self.posX == 0 and self.stepX < 0) or (self.posX == self.environment.width-1 and self.stepX > 0) or (self.posY == 0 and self.stepY < 0) or (self.posY == self.environment.height-1 and self.stepY > 0)
 
     def decide(self):
-        if self.willHitAWall():
+        if self.willHitAWall() and not(self.environment.torus):
             self.bounce()
         else:
             try:
@@ -40,3 +40,4 @@ class Agent:
         else:
             self.stepX, target.stepX = target.stepX, self.stepX
             self.stepY, target.stepY = target.stepY, self.stepY
+        print("Agent;" + str(self.posX) + ";" + str(self.posY) + ";" + str(self.stepX) + ";" + str(self.stepY))
