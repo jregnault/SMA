@@ -27,15 +27,22 @@ class View:
 
         width = gridView.get_width()
         height = gridView.get_height()
-        for i in range(0,width, int(width/self.environment.width)):
+        for i in range(0,self.environment.width+1):
+            pos = i * int(self.boxSize[0]) + i
             pygame.draw.line(
                 gridView,
                 (0,0,0,0),
-                (i,0),
-                (i,height-1))
+                (pos,0),
+                (pos,height-1))
     
-        for j in range(0,height, int(height/self.environment.height)):
-            pygame.draw.line(gridView, (0,0,0), (0,j), (width-1,j))
+        for j in range(0,self.environment.height+1):
+            pos = j * int(self.boxSize[1]) + j
+            pygame.draw.line(
+                gridView,
+                (0,0,0,0),
+                (0,pos),
+                (width-1,pos)
+            )
 
         return gridView
 
@@ -64,7 +71,8 @@ class View:
             agentView = self.drawAgent(agent)
             background.blit(
                 agentView,
-                (agent.posX * self.boxSize[0], agent.posY * self.boxSize[1])
+                (agent.posX * self.boxSize[0] + agent.posX + 1,
+                 agent.posY * self.boxSize[1] + agent.posY + 1)
             )
 
         self.screen.blit(background,(0,0))

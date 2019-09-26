@@ -45,7 +45,7 @@ class SMA:
         while stay_alive or tick < nbTours:
             self.runTurn()
             tick += 1
-            print("Tick;" + str(tick) + "\n")
+            print("Tick;" + str(tick))
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -62,7 +62,7 @@ class SMA:
                 a.decide()
         elif self.scheduling == "sequential":
             for a in self.agentList:
-                a.decide
+                a.decide()
         elif self.scheduling == "random":
             a = random.choice(self.agentList)
             a.decide()
@@ -91,6 +91,10 @@ if __name__ == "__main__":
         boxSize,
         config.getboolean("view","grid")
     )
+
+    seed = config.getint("simulation","seed")
+    if seed != 0:
+        random.seed(seed)
 
     sma = SMA(env,view,config.getint("simulation","nbparticles"), config.get("simulation","scheduling"))
     sma.register(view)

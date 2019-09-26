@@ -22,14 +22,15 @@ class Environment:
 
     def move(self,agent):
         if self.torus:
-            if agent.stepX >= 0:
-                if agent.stepY >= 0:
-                    self.add(agent, agent.posX + agent.stepX % self.width, agent.posY + agent.stepY % self.height)
-                else:
-                    self.add(agent, agent.posX + agent.stepX % self.width, agent.posY + agent.stepY % self.height)
+            newPosX = (agent.posX + agent.stepX) % self.width
+            newPosY = (agent.posY + agent.stepY) % self.height
         else:
-            self.add(agent, agent.posX + agent.stepX, agent.posY + agent.stepY)
+            newPosX = agent.posX + agent.stepX
+            newPosY = agent.posY + agent.stepY
+        self.add(agent, newPosX, newPosY)
         self.remove(agent.posX, agent.posY)
+        agent.posX = newPosX
+        agent.posY = newPosY
 
     def get(self, x, y):
         return self.space[x][y]

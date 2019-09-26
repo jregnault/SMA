@@ -4,7 +4,7 @@ import Environment
 
 class Agent:
 
-    def __init__(self, environment, posX = 0, posY = 0, stepX = 0, stepY = 0, color = (150,150,150,0)):
+    def __init__(self, environment, posX = 0, posY = 0, stepX = 0, stepY = 0, color = (150,150,150,255)):
         self.posX = posX
         self.posY = posY
         self.stepX = stepX
@@ -22,13 +22,14 @@ class Agent:
             try:
                 self.move()
             except ValueError as _:
-                self.bounce(self.environment.get(self.posX + self.stepX, self.posY + self.stepY))
+                if self.environment.torus:
+                    self.bounce(self.environment.get((self.posX + self.stepX) % self.environment.width, (self.posY + self.stepY)%self.environment.height))
+                else:
+                    self.bounce(self.environment.get(self.posX + self.stepX, self.posY + self.stepY))
 
     def move(self):
         self.color = (150,150,150,255)
         self.environment.move(self)
-        self.posX += self.stepX
-        self.posY += self.stepY
 
     def bounce(self, target=None):
         self.color = (250,0,0,255)
