@@ -8,7 +8,7 @@ import View
 import Agent
 import Environment
 
-class SMA:
+class ParticlesSMA:
     def __init__(self, environment, view, nbParticles, scheduling):
         self.observers = []
         self.environment = environment
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     if seed != 0:
         random.seed(seed)
 
-    sma = SMA(environment,view,config.getint("particules","nbparticles"), config.get("simulation","scheduling"))
+    sma = ParticlesSMA(environment,view,config.getint("particules","nbparticles"), config.get("simulation","scheduling"))
     sma.register(view)
     sma.run(config)
     
