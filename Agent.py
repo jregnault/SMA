@@ -18,17 +18,22 @@ class Agent:
     def decide(self):
         if self.willHitAWall() and not(self.environment.torus):
             self.bounce()
-        else:
+        try:
+            self.move()
+        except ValueError as _:
+            if self.environment.torus:
+                self.bounce(self.environment.get((self.posX + self.stepX) % self.environment.width, (self.posY + self.stepY)%self.environment.height))
+            else:
+                if self.willHitAWall():
+                    self.bounce()
+                else:
+                    self.bounce(self.environment.get(self.posX + self.stepX, self.posY + self.stepY))
             try:
                 self.move()
             except ValueError as _:
-                if self.environment.torus:
-                    self.bounce(self.environment.get((self.posX + self.stepX) % self.environment.width, (self.posY + self.stepY)%self.environment.height))
-                else:
-                    self.bounce(self.environment.get(self.posX + self.stepX, self.posY + self.stepY))
+                pass
 
     def move(self):
-        self.color = (150,150,150,255)
         self.environment.move(self)
 
     def bounce(self, target=None):

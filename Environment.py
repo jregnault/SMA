@@ -27,6 +27,8 @@ class Environment:
         else:
             newPosX = agent.posX + agent.stepX
             newPosY = agent.posY + agent.stepY
+        if newPosX >= self.width or newPosX < 0 or newPosY >= self.height or newPosY < 0:
+            raise ValueError("move : The agent can't go there!")
         self.add(agent, newPosX, newPosY)
         self.remove(agent.posX, agent.posY)
         agent.posX = newPosX

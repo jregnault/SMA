@@ -14,10 +14,10 @@ class View:
         self.screen = pygame.display.set_mode((canvasSizeX,canvasSizeY))
         pygame.display.set_caption("S.M.A.")
     
-    def drawBackground(self):
+    def drawBackground(self, color=(250,250,250)):
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        background.fill((250,250,250))
+        background.fill(color)
         return background
 
     def drawGrid(self):
