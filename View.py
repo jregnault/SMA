@@ -28,7 +28,7 @@ class View:
         width = gridView.get_width()
         height = gridView.get_height()
         for i in range(0,self.environment.width+1):
-            pos = i * int(self.boxSize[0]) + i
+            pos = i * self.boxSize + i
             pygame.draw.line(
                 gridView,
                 (0,0,0,0),
@@ -36,7 +36,7 @@ class View:
                 (pos,height-1))
     
         for j in range(0,self.environment.height+1):
-            pos = j * int(self.boxSize[1]) + j
+            pos = j * self.boxSize + j
             pygame.draw.line(
                 gridView,
                 (0,0,0,0),
@@ -47,17 +47,15 @@ class View:
         return gridView
 
     def drawAgent(self, agent):
-        agentView = pygame.Surface(self.boxSize)
+        agentView = pygame.Surface((self.boxSize,self.boxSize))
         agentView = agentView.convert_alpha()
         agentView.fill((0,0,0,0))
-
-        particleSize = min(self.boxSize[0], self.boxSize[1])
 
         pygame.draw.circle(
             agentView,
             agent.color,
             (int(agentView.get_width()/2), int(agentView.get_height()/2)),
-            int(particleSize/2),
+            int(self.boxSize/2),
             0)
         
         return agentView
@@ -71,8 +69,8 @@ class View:
             agentView = self.drawAgent(agent)
             background.blit(
                 agentView,
-                (agent.posX * self.boxSize[0] + agent.posX + 1,
-                 agent.posY * self.boxSize[1] + agent.posY + 1)
+                (agent.posX * self.boxSize + agent.posX + 1,
+                 agent.posY * self.boxSize + agent.posY + 1)
             )
 
         self.screen.blit(background,(0,0))

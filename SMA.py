@@ -9,18 +9,18 @@ import Agent
 import Environment
 
 class SMA:
-    def __init__(self, env, view, nbParticles, scheduling):
+    def __init__(self, environment, view, nbParticles, scheduling):
         self.observers = []
-        self.env = env
+        self.environment = environment
         self.view = view
         self.scheduling = scheduling
         self.agentList = []
         for _ in range(0,nbParticles):
             self.agentList.append(
                 Agent.Agent(
-                    self.env,
-                    random.randint(0,self.env.width-1),
-                    random.randint(0,self.env.height-1),
+                    self.environment,
+                    random.randint(0,self.environment.width-1),
+                    random.randint(0,self.environment.height-1),
                     random.randint(-1,1),
                     random.randint(-1,1)
                 )
@@ -71,32 +71,37 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read("config.ini")
 
-    gridSizeX = config.getint("env","gridSizeX")
-    gridSizeY = config.getint("env","gridSizeY")
+    gridSizeX = config.getint("environment","gridSizeX")
+    gridSizeY = config.getint("environment","gridSizeY")
 
-    env = Environment.Environment(
+    environment = Environment.Environment(
         gridSizeX,
         gridSizeY,
-        config.getboolean("env","torus")
+        config.getboolean("environment","torus")
     )
 
-    canvasSizeX = config.getint("view","canvassizex")
-    canvasSizeY = config.getint("view","canvassizey")
-    boxSize = (canvasSizeX/gridSizeX, canvasSizeY/gridSizeY)
+    grid = config.getboolean("view","grid")
+    boxSize = config.getint("view","boxsize")
+    canvasSizeX = gridSizeX * boxSize
+    canvasSizeY = gridSizeY * boxSize
+    if grid:
+        canvasSizeX += gridSizeX + 1
+        canvasSizeY += gridSizeY + 1
+    
 
     view = View.View(
-        env,
+        environment,
         canvasSizeX,
         canvasSizeY,
         boxSize,
-        config.getboolean("view","grid")
+        grid
     )
 
     seed = config.getint("simulation","seed")
     if seed != 0:
         random.seed(seed)
 
-    sma = SMA(env,view,config.getint("simulation","nbparticles"), config.get("simulation","scheduling"))
+    sma = SMA(environment,view,config.getint("particules","nbparticles"), config.get("simulation","scheduling"))
     sma.register(view)
     sma.run(config)
     
