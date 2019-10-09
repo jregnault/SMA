@@ -101,7 +101,7 @@ if __name__ == "__main__":
     if seed != 0:
         random.seed(seed)
 
-    sma = ParticlesSMA(environment,view,config.getint("particules","nbparticles"), config.get("simulation","scheduling"))
+    sma = ParticlesSMA(environment,view,config.getint("particles","nbparticles"), config.get("simulation","scheduling"))
     sma.register(view)
     sma.run(config)
     
