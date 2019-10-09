@@ -36,3 +36,9 @@ class Particle(Agent):
             except BounceError as _:
                 pass
     
+    def bounce(self, target=None):
+        if target != None:
+            self.posX, target.posX = target.posX, self.posX
+            self.posY, target.posY = target.posY, self.posY
+        else:
+            pass
