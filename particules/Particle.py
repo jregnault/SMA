@@ -8,6 +8,8 @@ class Particle(Agent):
         super().__init__(environment,posX,posY,direction,color)
 
     def willHitAWall(self):
+        """Return True if the next move is illegal in terms of boundaries,
+        False otherwise"""
         if self.environment.torus:
             return False
         else:
@@ -21,6 +23,7 @@ class Particle(Agent):
                 return True
     
     def decide(self):
+        """Ask the agent to analyze its environment and take action (or not)"""
         if self.willHitAWall():
             self.bounce()
             self.decide()
@@ -37,8 +40,16 @@ class Particle(Agent):
                 pass
     
     def bounce(self, target=None):
+        """Change the direction according to the situation.
+        Parameters:
+        -----------
+        - target : the agent to bounce against. If setted to None, we consider that the agent is bouncing against a wall.
+        """
         if target != None:
             self.posX, target.posX = target.posX, self.posX
             self.posY, target.posY = target.posY, self.posY
         else:
-            pass
+            if self.posX == 0 or self.posX == self.environment.width - 1:
+                self.direction[0] *= -1
+            if self.posY == 0 or self.posY == self.environment.height - 1:
+                self.direction[1] *= -1
