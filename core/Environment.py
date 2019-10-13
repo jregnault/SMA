@@ -5,13 +5,12 @@ from core.Error import TileNotEmptyError, BounceError
 
 class Environment:
 
-    def __init__(self, view, gridSizeX=100, gridSizeY=100, torus=False, color=(0,0,0)):
+    def __init__(self, gridSizeX=100, gridSizeY=100, torus=False, color=(0,0,0)):
         self.width = gridSizeX
         self.height = gridSizeY
         self.space = np.empty((gridSizeX, gridSizeY), dtype=Agent , order='F')
         self.torus = torus
         self.color = color
-        self.view = view
     
     def place(self, agent, x, y):
         """Try to place an agent at a specified position.

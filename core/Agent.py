@@ -14,17 +14,17 @@ class Agent:
     def decide(self, sma):
         pass
 
-    def draw(self, surface):
+    def draw(self, view):
         """Draw the agent on the surface.
         Parameters:
         -----------
-        - surface : the surface to draw on. Should be the screen.
+        - view : the view associated to the SMA.
         """
-        boxSize = self.environment.view.boxSize
+        boxSize = view.boxSize
         x = self.posX * boxSize + (boxSize / 2)
         y = self.posY * boxSize + (boxSize / 2)
         if self.environment.torus:
             x += self.posX + 1
             y += self.posY + 1
 
-        pygame.draw.circle(surface, self.color, [x,y], boxSize / 2)
+        pygame.draw.circle(view.screen, self.color, [x,y], boxSize / 2)
