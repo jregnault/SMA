@@ -31,3 +31,13 @@ class ParticleSMA:
     def notify(self):
         for o in self.observers:
             o.update(self)
+    
+    def runTurn(self):
+        if self.scheduling == "random":
+            a = random.choice(self.agentList)
+            a.decide(self)
+        else:
+            if self.scheduling == "fair":
+                random.shuffle(self.agentList)
+            for a in self.agentList:
+                a.decide(self)
