@@ -1,7 +1,7 @@
 import numpy as np
 
 from core.Agent import Agent
-from core.Error import TileNotEmptyError
+from core.Error import TileNotEmptyError, BounceError
 
 class Environment:
 
@@ -30,3 +30,21 @@ class Environment:
     def remove(self, x, y):
         """Sets the given position to None."""
         self.space[x][y] = None
+    
+    def move(self, agent):
+        nextPosX = agent.posX + agent.direction[0]
+        nextPosY = agent.posY + agent.direction[1]
+
+        if self.torus:
+            nextPosX = nextPosX % self.width
+            nextPosY = nextPosY % self.height
+        else:
+            if nextPosX < 0 or nextPosX >= self.width or nextPosY < 0 or nextPosY >= self.height:
+                raise BounceError()
+        
+        if self.space[nextPosX][nextPosY] == None:
+            self.space[nextPosX][nextPosY] = agent
+            agent.posX = nextPosX
+            agent.posY = nextPosY
+        else:
+            raise BounceError()
