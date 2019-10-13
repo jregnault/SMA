@@ -37,3 +37,8 @@ class View:
             pygame.draw.line(gridSurface, (0,0,0,255), (0,pos), (width-1,pos))
         
         self.screen.blit(gridSurface)
+    
+    def update(self, observable):
+        for agent in observable.agentList:
+            agent.draw(self.screen)
+        pygame.display.flip()
