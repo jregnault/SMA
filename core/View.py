@@ -2,7 +2,7 @@ import pygame
 
 class View:
     
-    def __init__(self, environment, boxSize=1, backgroundColor=(0,0,0), grid=False):
+    def __init__(self, environment, boxSize=1, grid=False):
         self.environment = environment
         self.boxSize = boxSize
         self.grid = grid
@@ -16,7 +16,7 @@ class View:
         pygame.init()
         self.screen = pygame.display.set_mode((canvasSizeX,canvasSizeY))
         pygame.display.set_caption("Multi-Agent System")
-        self.screen.fill(backgroundColor)
+        self.screen.fill(environment.color)
         if grid:
             self.drawGrid()
     
