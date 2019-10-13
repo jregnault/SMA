@@ -4,3 +4,5 @@ class Error(Exception):
 class BounceError(Error):
     pass
 
+class TileNotEmptyError(Error):
+    pass
