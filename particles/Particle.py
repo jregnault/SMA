@@ -1,5 +1,5 @@
 from core.Agent import Agent
-
+from core.Error import BounceError
 
 class Particle(Agent):
     """A simple ball that bounce against walls and other balls"""
@@ -22,18 +22,18 @@ class Particle(Agent):
             except IndexError as _:
                 return True
     
-    def decide(self):
+    def decide(self, sma):
         """Ask the agent to analyze its environment and take action (or not)"""
         if self.willHitAWall():
-            self.bounce()
-            self.decide()
+            self.bounce(sma)
+            self.decide(sma)
         try:
             self.move()
         except BounceError as _:
             if self.environment.torus:
-                self.bounce(self.environment.get(self.posX + self.direction[0] % self.environment.width, self.posY + self.direction[1] % self.environment.height))
+                self.bounce(sma, self.environment.get(self.posX + self.direction[0] % self.environment.width, self.posY + self.direction[1] % self.environment.height))
             else:
-                self.bounce(self.environment.get(self.posX + self.direction[0], self.posY + self.direction[1]))
+                self.bounce(sma, self.environment.get(self.posX + self.direction[0], self.posY + self.direction[1]))
             try:
                 self.move()
             except BounceError as _:
@@ -43,12 +43,13 @@ class Particle(Agent):
         """Ask the environment to move the agent."""
         self.environment.move(self)
 
-    def bounce(self, target=None):
+    def bounce(self, sma, target=None):
         """Change the direction according to the situation.
         Parameters:
         -----------
         - target : the agent to bounce against. If setted to None, we consider that the agent is bouncing against a wall.
         """
+        self.color = (250,0,0,255)
         if target != None:
             self.posX, target.posX = target.posX, self.posX
             self.posY, target.posY = target.posY, self.posY
@@ -57,3 +58,5 @@ class Particle(Agent):
                 self.direction[0] *= -1
             if self.posY == 0 or self.posY == self.environment.height - 1:
                 self.direction[1] *= -1
+        if sma.trace:
+            print("Agent;" + str(self.posX) + ";" + str(self.posY))

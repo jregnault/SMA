@@ -11,3 +11,5 @@ class Environment:
         self.torus = torus
         self.color = color
         self.view = view
+    
+    
