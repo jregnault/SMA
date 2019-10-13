@@ -26,3 +26,7 @@ class Environment:
             self.space[x][y] = agent
         else:
             raise TileNotEmptyError()
+    
+    def remove(self, x, y):
+        """Sets the given position to None."""
+        self.space[x][y] = None
