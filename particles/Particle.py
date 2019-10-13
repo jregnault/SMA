@@ -28,20 +28,16 @@ class Particle(Agent):
             self.bounce(sma)
             self.decide(sma)
         try:
-            self.move()
+            self.environment.move()
         except BounceError as _:
             if self.environment.torus:
                 self.bounce(sma, self.environment.get(self.posX + self.direction[0] % self.environment.width, self.posY + self.direction[1] % self.environment.height))
             else:
                 self.bounce(sma, self.environment.get(self.posX + self.direction[0], self.posY + self.direction[1]))
             try:
-                self.move()
+                self.environment.move()
             except BounceError as _:
                 pass
-    
-    def move(self):
-        """Ask the environment to move the agent."""
-        self.environment.move(self)
 
     def bounce(self, sma, target=None):
         """Change the direction according to the situation.
