@@ -3,7 +3,7 @@ import pygame
 class View:
     
     def __init__(self, environment, boxSize=1, backgroundColor=(0,0,0), grid=False):
-        self.environement = environment
+        self.environment = environment
         self.boxSize = boxSize
         self.grid = grid
 
@@ -28,11 +28,11 @@ class View:
 
         width = gridSurface.get_width()
         height = gridSurface.get_height()
-        for i in range(0, self.environement.width+1):
+        for i in range(0, self.environment.width+1):
             pos = i * self.boxSize + i
             pygame.draw.line(gridSurface, (0,0,0,255), (pos,0), (pos,height-1))
         
-        for j in range(0, self.environement.height+1):
+        for j in range(0, self.environment.height+1):
             pos = j * self.boxSize + j
             pygame.draw.line(gridSurface, (0,0,0,255), (0,pos), (width-1,pos))
         
