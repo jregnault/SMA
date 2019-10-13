@@ -53,3 +53,7 @@ class Environment:
             agent.posY = nextPosY
         else:
             raise BounceError()
+
+    def get(self, x, y):
+        """Returns the content of the tile (x,y)."""
+        return self.space[x][y]
