@@ -1,11 +1,13 @@
+import logging
+
 from core.Agent import Agent
 from core.Error import BounceError
 
 class Particle(Agent):
     """A simple ball that bounce against walls and other balls"""
 
-    def __init__(self, environment, posX = 0, posY = 0, direction = (1,1), color = (150,150,150,255)):
-        super().__init__(environment,posX,posY,direction,color)
+    def __init__(self, environment, posX = 0, posY = 0, stepX = 0, stepY = 0, color = (150,150,150,255)):
+        super().__init__(environment,posX,posY,stepX,stepY,color)
 
     def willHitAWall(self):
         """Return True if the next move is illegal in terms of boundaries,
@@ -13,8 +15,8 @@ class Particle(Agent):
         if self.environment.torus:
             return False
         else:
-            nextPosX = self.posX + self.direction[0]
-            nextPosY = self.posY + self.direction[1]
+            nextPosX = self.posX + self.stepX
+            nextPosY = self.posY + self.stepY
 
             try:
                 self.environment.get(nextPosX,nextPosY)
@@ -24,18 +26,21 @@ class Particle(Agent):
     
     def decide(self, sma):
         """Ask the agent to analyze its environment and take action (or not)"""
+        logging.debug("Agent %d: posX = %d; posY = %d; stepX = %d, stepY = %d", self.agentId, self.posX, self.posY, self.stepX, self.stepY)
         if self.willHitAWall():
             self.bounce(sma)
-            self.decide(sma)
         try:
-            self.environment.move()
+            self.environment.move(self)
         except BounceError as _:
             if self.environment.torus:
-                self.bounce(sma, self.environment.get(self.posX + self.direction[0] % self.environment.width, self.posY + self.direction[1] % self.environment.height))
+                self.bounce(sma, self.environment.get(self.posX + self.stepX % self.environment.width, self.posY + self.stepY % self.environment.height))
             else:
-                self.bounce(sma, self.environment.get(self.posX + self.direction[0], self.posY + self.direction[1]))
+                if self.willHitAWall():
+                    self.bounce(sma)
+                else:
+                    self.bounce(sma, self.environment.get(self.posX + self.stepX, self.posY + self.stepY))
             try:
-                self.environment.move()
+                self.environment.move(self)
             except BounceError as _:
                 pass
 
@@ -45,14 +50,23 @@ class Particle(Agent):
         -----------
         - target : the agent to bounce against. If setted to None, we consider that the agent is bouncing against a wall.
         """
-        self.color = (250,0,0,255)
         if target != None:
+            self.color = (250,0,0,255)
+            target.color = (250,0,0,255)
             self.posX, target.posX = target.posX, self.posX
             self.posY, target.posY = target.posY, self.posY
         else:
-            if self.posX == 0 or self.posX == self.environment.width - 1:
-                self.direction[0] *= -1
-            if self.posY == 0 or self.posY == self.environment.height - 1:
-                self.direction[1] *= -1
+            if self.stepX == 0 or self.stepY == 0:
+                self.stepX *= -1
+                self.stepY *= -1
+            else:
+                if (self.posX, self.posY) == (0,0):
+                    self.stepX, self.stepY = 1, 1
+                elif (self.posX, self.posY) == (0,self.environment.height - 1):
+                    self.stepX, self.stepY = 1, -1
+                elif (self.posX, self.posY) == (self.environment.width - 1, 0):
+                    self.stepX, self.stepY = -1, 1
+                else:
+                    self.stepX, self.stepY = -1, -1
         if sma.trace:
-            print("Agent;" + str(self.posX) + ";" + str(self.posY))
+            print("Agent;" + str(self.agentId) + ";" + str(self.posX) + ";" + str(self.posY))

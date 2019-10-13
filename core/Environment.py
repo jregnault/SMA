@@ -5,7 +5,7 @@ from core.Error import TileNotEmptyError, BounceError
 
 class Environment:
 
-    def __init__(self, gridSizeX=100, gridSizeY=100, torus=False, color=(0,0,0)):
+    def __init__(self, gridSizeX=100, gridSizeY=100, torus=False, color=(255,255,255)):
         self.width = gridSizeX
         self.height = gridSizeY
         self.space = np.empty((gridSizeX, gridSizeY), dtype=Agent , order='F')
@@ -36,8 +36,8 @@ class Environment:
         -----------
         - agent : the agent that tries to move
         """
-        nextPosX = agent.posX + agent.direction[0]
-        nextPosY = agent.posY + agent.direction[1]
+        nextPosX = agent.posX + agent.stepX
+        nextPosY = agent.posY + agent.stepY
 
         if self.torus:
             nextPosX = nextPosX % self.width
@@ -48,6 +48,7 @@ class Environment:
         
         if self.space[nextPosX][nextPosY] == None:
             self.space[nextPosX][nextPosY] = agent
+            self.remove(agent.posX, agent.posY)
             agent.posX = nextPosX
             agent.posY = nextPosY
         else:

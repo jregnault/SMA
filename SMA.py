@@ -3,6 +3,7 @@ from pygame.locals import *
 from configparser import ConfigParser
 import random
 import time
+import logging
 
 from core.Environment import Environment
 from core.View import View
@@ -32,6 +33,10 @@ def run(sma, config):
             sma.notify()
 
 if __name__ == "__main__":
+    LOG_FORMAT = "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s"
+    LOG_LEVEL = logging.DEBUG
+    logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL)
+
     config = ConfigParser()
     config.read("config.ini")
 
@@ -57,7 +62,7 @@ if __name__ == "__main__":
     if seed != 0:
         random.seed(seed)
 
-    sma = ParticleSMA(environment,view,config.getint("particles","nbparticles"), config.get("simulation","scheduling"))
+    sma = ParticleSMA(environment,view,config.getint("particles","nbparticles"), config.get("simulation","scheduling"), config.getboolean("simulation","trace"))
     sma.register(view)
     run(sma, config)
     

@@ -3,10 +3,11 @@ import random
 from particles.Particle import Particle
 
 class ParticleSMA:
-    def __init__(self, environment, view, nbParticles, scheduling):
+    def __init__(self, environment, view, nbParticles, scheduling, trace = False):
         self.environment = environment
         self.view = view
         self.scheduling = scheduling
+        self.trace = trace
 
         self.agentList = []
         self.observers = []
@@ -19,10 +20,12 @@ class ParticleSMA:
                 stepY = random.randint(-1,1)
             self.agentList.append(
                 Particle(
+                    i,
                     environment,
                     random.randint(0,environment.width - 1),
                     random.randint(0,environment.height - 1),
-                    (stepX,stepY))
+                    stepX,
+                    stepY)
             )
     
     def register(self, observer):
