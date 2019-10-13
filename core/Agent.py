@@ -1,11 +1,8 @@
 
-NEXT_AGENT_ID = 1
-
 class Agent:
     """Abstract agent"""
-    def __init__(self, environment, posX = 0, posY = 0, direction = (0,0), color = (150,150,150,255)):
-        self.id = NEXT_AGENT_ID
-        NEXT_AGENT_ID += 1
+    def __init__(self, idAgent, environment, posX = 0, posY = 0, direction = (0,0), color = (150,150,150,255)):
+        self.id = idAgent
         self.posX = posX
         self.posY = posY
         self.direction = direction
@@ -14,3 +11,6 @@ class Agent:
     
     def decide(self):
         pass
+
+	def move(self):
+		pass

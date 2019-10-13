@@ -39,6 +39,10 @@ class Particle(Agent):
             except BounceError as _:
                 pass
     
+    def move(self):
+        """Ask the environment to move the agent."""
+        self.environment.move(self)
+
     def bounce(self, target=None):
         """Change the direction according to the situation.
         Parameters:
