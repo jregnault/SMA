@@ -33,7 +33,7 @@ class Particle(Agent):
             self.environment.move(self)
         except BounceError as _:
             if self.environment.torus:
-                self.bounce(sma, self.environment.get(self.posX + self.stepX % self.environment.width, self.posY + self.stepY % self.environment.height))
+                self.bounce(sma, self.environment.get((self.posX + self.stepX) % self.environment.width, (self.posY + self.stepY) % self.environment.height))
             else:
                 if self.willHitAWall():
                     self.bounce(sma)
@@ -57,16 +57,25 @@ class Particle(Agent):
             self.posY, target.posY = target.posY, self.posY
         else:
             if self.stepX == 0 or self.stepY == 0:
+                # horizontal/vertical movement
                 self.stepX *= -1
                 self.stepY *= -1
             else:
+                # corners
                 if (self.posX, self.posY) == (0,0):
                     self.stepX, self.stepY = 1, 1
                 elif (self.posX, self.posY) == (0,self.environment.height - 1):
                     self.stepX, self.stepY = 1, -1
                 elif (self.posX, self.posY) == (self.environment.width - 1, 0):
                     self.stepX, self.stepY = -1, 1
-                else:
+                elif (self.posX, self.posY) == (self.environment.width -1, self.environment.height -1):
                     self.stepX, self.stepY = -1, -1
+                else:
+                    # borders
+                    if self.posX == 0 or self.posX == self.environment.width - 1:
+                        self.stepX *= -1
+                    else:
+                        self.stepY *= -1
+
         if sma.trace:
             print("Agent;" + str(self.agentId) + ";" + str(self.posX) + ";" + str(self.posY))
