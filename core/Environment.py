@@ -32,6 +32,11 @@ class Environment:
         self.space[x][y] = None
     
     def move(self, agent):
+        """Move an agent based on its direction. Raise BounceError if the movement is illegal.
+        Parameters:
+        -----------
+        - agent : the agent that tries to move
+        """
         nextPosX = agent.posX + agent.direction[0]
         nextPosY = agent.posY + agent.direction[1]
 
