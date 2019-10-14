@@ -23,8 +23,9 @@ class Fish(Agent):
             directions.remove((self.stepX,self.stepY))
             try:
                 self.environment.move(self)
-                if self.breedTick == self.breedTime:
+                if self.breedTick >= self.breedTime:
                     child = self.clone()
+                    child.agentId = sma.nextAgentId
                     sma.nextAgentId += 1
                     child.posX, child.posY = oldX, oldY
                     child.color = (255,255,0,255)
