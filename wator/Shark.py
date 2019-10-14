@@ -17,3 +17,7 @@ class Shark(Fish):
         self.energyLeft -= 1
         if self.energyLeft == 0:
             self.die()
+    
+    def clone(self):
+        return Shark.__init__(self.agentId, self.environment, self.posX, self.posY, self.color, self.breedTime, self.starveTime)
+    
