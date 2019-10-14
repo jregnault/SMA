@@ -21,6 +21,15 @@ class Shark(Fish):
     def clone(self):
         return Shark.__init__(self.agentId, self.environment, self.posX, self.posY, self.color, self.breedTime, self.starveTime)
     
+    def eat(self):
+        x, y = self.posX + self.stepX, self.posY + self.stepY
+        if self.environment.torus:
+            x = x % self.environment.width
+            y = y % self.environment.height
+        target = self.environment.get(x, y)
+        target.die()
+        self.energyLeft += self.starveTime
+
     def decide(self, sma):
         oldX, oldY = self.posX, self.posY
         directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
