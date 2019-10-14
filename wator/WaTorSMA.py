@@ -42,3 +42,12 @@ class WaTorSMA:
                 )
             )
             self.nextAgentId += 1
+    
+    def register(self, observer):
+        self.observers.append(observer)
+    
+    def notify(self):
+        for o in self.observers:
+            o.update(self)
+    
+    
