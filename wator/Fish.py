@@ -11,6 +11,10 @@ class Fish(Agent):
         self.breedTime = breedTime
         self.breedTick = 0
     
+    def update(self):
+        self.color = (0,255,0,255)
+        self.breedTick += 1
+
     def decide(self, sma):
         oldX, oldY = self.posX, self.posY
         directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
@@ -20,7 +24,7 @@ class Fish(Agent):
             try:
                 self.environment.move(self)
                 if self.breedTick == self.breedTime:
-                    child = self.clone(sma)
+                    child = self.clone()
                     sma.nextAgentId += 1
                     child.posX, child.posY = oldX, oldY
                     child.color = (255,255,0,255)
@@ -31,5 +35,5 @@ class Fish(Agent):
             except BounceError as _:
                 pass
     
-    def clone(self, sma):
+    def clone(self):
         return Fish.__init__(self.agentId, self.environment, self.posX, self.posY, self.color, self.breedTime)
