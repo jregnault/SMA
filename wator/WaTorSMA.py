@@ -50,4 +50,24 @@ class WaTorSMA:
         for o in self.observers:
             o.update(self)
     
-    
+    def runTurn(self):
+        if self.scheduling == "random":
+            a = random.choice(self.agentList)
+            a.decide(self)
+        else:
+            if self.scheduling == "fair":
+                random.shuffle(self.agentList)
+            for a in self.agentList:
+                a.decide(self)
+        deathNote = []
+        for a in self.agentList:
+            a.update()
+            if a.isAlive == False:
+                deathNote.append(a)
+        for a in deathNote:
+            self.agentList.remove(a)
+        for a in self.birthList:
+            a.update()
+            if a.isAlive:
+                self.agentList.append(a)
+        self.birthList = []
