@@ -50,6 +50,9 @@ class View:
             self.drawGrid()
         else:
             self.drawBackground()
-        for agent in observable.agentList:
-            agent.draw(self)
+        for y in range(0,self.environment.height):
+            for x in range(0, self.environment.width):
+                agent = self.environment.get(x, y)
+                if agent != None:
+                    agent.draw(self)
         pygame.display.flip()
