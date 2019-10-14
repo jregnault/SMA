@@ -20,8 +20,10 @@ class Fish(Agent):
             try:
                 self.environment.move(self)
                 if self.breedTick == self.breedTime:
-                    child = self.clone()
+                    child = self.clone(sma)
+                    sma.nextAgentId += 1
                     child.posX, child.posY = oldX, oldY
+                    child.color = (255,255,0,255)
                     sma.birthList.append(child)
                     self.environment.place(child, oldX, oldY)
                     self.breedTick = 0
@@ -29,4 +31,5 @@ class Fish(Agent):
             except BounceError as _:
                 pass
     
-    
+    def clone(self, sma):
+        return Fish.__init__(self.agentId, self.environment, self.posX, self.posY, self.color, self.breedTime)
