@@ -11,4 +11,9 @@ class Shark(Fish):
         self.starveTime = starveTime
         self.energyLeft = starveTime
     
-    
+    def update(self):
+        self.color = (255,0,0,255)
+        self.breedTick += 1
+        self.energyLeft -= 1
+        if self.energyLeft == 0:
+            self.die()
