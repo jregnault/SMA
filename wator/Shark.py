@@ -21,3 +21,32 @@ class Shark(Fish):
     def clone(self):
         return Shark.__init__(self.agentId, self.environment, self.posX, self.posY, self.color, self.breedTime, self.starveTime)
     
+    def decide(self, sma):
+        oldX, oldY = self.posX, self.posY
+        directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+        dests = []
+        for d in directions:
+            (self.stepX, self.stepY) = d
+            nextPosX, nextPosY = self.posX + self.stepX, self.posY + self.stepY
+            if self.environment.torus:
+                nextPosX = nextPosX % self.environment.width
+                nextPosY = nextPosY % self.environment.height
+            try:
+                target = self.environment.get(nextPosX, nextPosY)
+                if target == None:
+                    dests.append(d)
+                elif type(target) == Fish:
+                    self.eat()
+                    self.environment.move(self)
+                    if self.breedTick >= self.breedTime:
+                        child = self.clone()
+                        child.agentId = sma.nextAgentId
+                        sma.nextAgentId += 1
+                        child.posX, child.posY = oldX, oldY
+                        child.color = (253,108,158,255)
+                        self.environment.place(child, oldX, oldY)
+                        sma.birthList.append(child)
+                        self.breedTick = 0
+                    return
+            except IndexError as _:
+                pass
