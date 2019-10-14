@@ -60,14 +60,22 @@ class WaTorSMA:
             for a in self.agentList:
                 a.decide(self)
         deathNote = []
+        nbFishes = 0
+        nbSharks = 0
         for a in self.agentList:
-            a.update()
+            a.update(self)
             if a.isAlive == False:
                 deathNote.append(a)
+            else:
+                if type(a) == Fish:
+                    nbFishes += 1
+                else:
+                    nbSharks += 1
         for a in deathNote:
             self.agentList.remove(a)
         for a in self.birthList:
-            a.update()
+            a.update(self)
             if a.isAlive:
                 self.agentList.append(a)
         self.birthList = []
+        print("Tick;" + str(nbFishes) + ";" + str(nbSharks))

@@ -4,11 +4,13 @@ from configparser import ConfigParser
 import random
 import time
 import logging
+import argparse
 
 from core.Environment import Environment
 from core.View import View
 
 from particles.ParticleSMA import ParticleSMA
+from wator.WaTorSMA import WaTorSMA
     
 def run(sma, config):
     sma.notify()
@@ -37,6 +39,16 @@ if __name__ == "__main__":
     LOG_LEVEL = logging.DEBUG
     logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL)
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "system",
+        nargs='?',
+        choices=["particles","wator"],
+        help="The simulation to start. Can be particles or wator"
+    )
+
+    args = parser.parse_args()
+
     config = ConfigParser()
     config.read("config.ini")
 
@@ -48,6 +60,9 @@ if __name__ == "__main__":
         gridSizeY,
         config.getboolean("environment","torus")
     )
+
+    if args.system == "wator":
+        environment.color = (0,0,255)
 
     grid = config.getboolean("view","grid")
     boxSize = config.getint("view","boxsize")
@@ -62,7 +77,29 @@ if __name__ == "__main__":
     if seed != 0:
         random.seed(seed)
 
-    sma = ParticleSMA(environment,view,config.getint("particles","nbparticles"), config.get("simulation","scheduling"), config.getboolean("simulation","trace"))
+    scheduling = config.get("simulation","scheduling")
+    trace = config.getboolean("simulation","trace")
+
+    if args.system == "particles":
+        sma = ParticleSMA(
+            environment,
+            view,
+            config.getint("particles","nbparticles"),
+            scheduling,
+            trace
+        )
+    elif args.system == "wator":
+        sma = WaTorSMA(
+            environment,
+            view,
+            scheduling,
+            trace,
+            config.getint("wator","nbfishes"),
+            config.getint("wator","fishesbreedtime"),
+            config.getint("wator","nbsharks"),
+            config.getint("wator","sharksbreedtime"),
+            config.getint("wator","sharksstarvetime")
+        )
     sma.register(view)
     run(sma, config)
     

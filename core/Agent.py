@@ -13,11 +13,13 @@ class Agent:
         self.color = color
         self.isAlive = True
     
-    def die(self):
+    def die(self, sma):
         """make the agent die"""
         self.isAlive = False
         self.color = (0,0,0,255)
         self.environment.remove(self.posX, self.posY)
+        if sma.trace:
+            print("Agent;" + str(self.agentId) + ";" + str(self.posX) + ";" + str(self.posY) + ";" + "0")
     
     def decide(self, sma):
         pass
