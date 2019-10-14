@@ -11,6 +11,13 @@ class Agent:
         self.stepX = stepX
         self.stepY = stepY
         self.color = color
+        self.isAlive = True
+    
+    def die(self):
+        """make the agent die"""
+        self.isAlive = False
+        self.color = (0,0,0,255)
+        self.environment.remove(self.posX, self.posY)
     
     def decide(self, sma):
         pass
