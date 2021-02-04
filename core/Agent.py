@@ -1,15 +1,12 @@
 import pygame
 
+
 class Agent:
     """Abstract agent"""
 
-    def __init__(self, agentId, environment, posX = 0, posY = 0, stepX = 0, stepY = 0, color = (150,150,150,255)):
-        self.agentId = agentId
+    def __init__(self, agent_id, environment, color=(150, 150, 150, 255)):
+        self.agentId = agent_id
         self.environment = environment
-        self.posX = posX
-        self.posY = posY
-        self.stepX = stepX
-        self.stepY = stepY
         self.color = color
         self.isAlive = True
     
