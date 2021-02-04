@@ -3,12 +3,14 @@ import numpy as np
 from core.Agent import Agent
 from core.Error import TileNotEmptyError, BounceError
 
+
 class Environment:
 
     def __init__(self, gridSizeX=100, gridSizeY=100, torus=False, color=(255,255,255)):
         self.width = gridSizeX
         self.height = gridSizeY
         self.space = np.empty((gridSizeX, gridSizeY), dtype=Agent , order='F')
+        self.agents = {}
         self.torus = torus
         self.color = color
     
@@ -21,13 +23,15 @@ class Environment:
         - x : the x position
         - y : the y position
         """
-        if self.space[x][y] == None:
+        if self.space[x][y] is None:
             self.space[x][y] = agent
+            self.agents[agent.agentId] = (x, y)
         else:
             raise TileNotEmptyError()
     
-    def remove(self, x, y):
-        """Sets the given position to None."""
+    def remove(self, agent):
+        """Removes the agent from the environment."""
+        (x, y) = self.agents.pop(agent)
         self.space[x][y] = None
     
     def move(self, agent):
