@@ -18,7 +18,7 @@ class Agent:
         if sma.trace:
             print("Agent;" + str(self.agentId) + ";" + str(self.posX) + ";" + str(self.posY) + ";" + "0")
     
-    def decide(self, sma):
+    def decide(self, environment):
         pass
 
     def draw(self, view):

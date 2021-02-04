@@ -13,7 +13,13 @@ class Environment:
         self.agents = {}
         self.torus = torus
         self.color = color
-    
+
+    def get_position(self, x, y):
+        return self.space[x][y]
+
+    def get_agent_position(self, agent_id):
+        return self.agents[agent_id]
+
     def place(self, agent, x, y):
         """Try to place an agent at a specified position.
         Raise TileNotEmptyError if the tile is already occupied by another agent.
@@ -28,10 +34,17 @@ class Environment:
             self.agents[agent.agentId] = (x, y)
         else:
             raise TileNotEmptyError()
-    
-    def remove(self, agent):
+
+    def move_to(self, agent, x, y):
+        if self.space[x][y] is not None:
+            raise TileNotEmptyError()
+
+        self.remove(agent.agentId)
+        self.place(agent, x, y)
+
+    def remove(self, agent_id):
         """Removes the agent from the environment."""
-        (x, y) = self.agents.pop(agent)
+        (x, y) = self.agents.pop(agent_id)
         self.space[x][y] = None
     
     def move(self, agent):
