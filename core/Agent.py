@@ -1,22 +1,23 @@
 import pygame
 
+
 class Agent:
     """Abstract agent"""
 
-    def __init__(self, agentId, environment, posX = 0, posY = 0, stepX = 0, stepY = 0, color = (150,150,150,255)):
-        self.agentId = agentId
+    def __init__(self, agent_id, environment, pos_x=0, pos_y=0, step_x=0, step_y=0, color=(150, 150, 150, 255)):
+        self.agentId = agent_id
         self.environment = environment
-        self.posX = posX
-        self.posY = posY
-        self.stepX = stepX
-        self.stepY = stepY
+        self.posX = pos_x
+        self.posY = pos_y
+        self.stepX = step_x
+        self.stepY = step_y
         self.color = color
         self.isAlive = True
     
     def die(self, sma):
         """make the agent die"""
         self.isAlive = False
-        self.color = (0,0,0,255)
+        self.color = (0, 0, 0, 255)
         self.environment.remove(self.posX, self.posY)
         if sma.trace:
             print("Agent;" + str(self.agentId) + ";" + str(self.posX) + ";" + str(self.posY) + ";" + "0")
@@ -30,11 +31,11 @@ class Agent:
         -----------
         - view : the view associated to the SMA.
         """
-        boxSize = view.boxSize
-        x = self.posX * boxSize + boxSize / 2
-        y = self.posY * boxSize + boxSize / 2
+        box_size = view.boxSize
+        x = self.posX * box_size + box_size / 2
+        y = self.posY * box_size + box_size / 2
         if view.grid:
             x += self.posX + 1
             y += self.posY + 1
 
-        pygame.draw.circle(view.screen, self.color, (int(x),int(y)), int(boxSize / 2),0)
+        pygame.draw.circle(view.screen, self.color, (int(x), int(y)), int(box_size / 2), 0)

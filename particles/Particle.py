@@ -6,8 +6,8 @@ from core.Error import BounceError
 class Particle(Agent):
     """A simple ball that bounce against walls and other balls"""
 
-    def __init__(self, environment, posX = 0, posY = 0, stepX = 0, stepY = 0, color = (150,150,150,255)):
-        super().__init__(environment,posX,posY,stepX,stepY,color)
+    def __init__(self, environment, pos_x = 0, pos_y = 0, step_x = 0, step_y = 0, color = (150, 150, 150, 255)):
+        super().__init__(environment, pos_x, pos_y, step_x, step_y, color)
 
     def willHitAWall(self):
         """Return True if the next move is illegal in terms of boundaries,
