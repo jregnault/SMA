@@ -1,20 +1,21 @@
 import random
 
 from wator.Fish import Fish
-from core.Error import BounceError
+
 
 class Shark(Fish):
     """A fish with teeth"""
 
-    def __init__(self, agentId, environment, posX = 0, posY = 0, color = (253,108,158,255), breedTime = 10, starveTime = 3):
-        super().__init__(agentId, environment, posX, posY, color, breedTime)
-        self.starveTime = starveTime
-        self.energyLeft = starveTime
+    def __init__(self, agent_id, environment, pos_x=0, pos_y=0, color=(253, 108, 158, 255), breed_time=10,
+                 starve_time=3):
+        super().__init__(agent_id, environment, pos_x, pos_y, color, breed_time)
+        self.starveTime = starve_time
+        self.energyLeft = starve_time
     
     def update(self, sma):
         self.age += 1
         if self.age == 5:
-            self.color = (255,0,0,255)
+            self.color = (255, 0, 0, 255)
         self.breedTick += 1
         self.energyLeft -= 1
         if self.energyLeft == 0:
@@ -32,20 +33,20 @@ class Shark(Fish):
             print("Shark;" + str(self.agentId) + ";" + str(self.posX) + ";" + str(self.posY))
 
     def decide(self, sma):
-        oldX, oldY = self.posX, self.posY
-        directions = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
-        dests = []
-        while directions != []:
+        old_x, old_y = self.posX, self.posY
+        directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        destinations = []
+        while directions:
             d = random.choice(directions)
             (self.stepX, self.stepY) = d
-            nextPosX, nextPosY = self.posX + self.stepX, self.posY + self.stepY
+            next_pos_x, next_pos_y = self.posX + self.stepX, self.posY + self.stepY
             if self.environment.torus:
-                nextPosX = nextPosX % self.environment.width
-                nextPosY = nextPosY % self.environment.height
+                next_pos_x = next_pos_x % self.environment.width
+                next_pos_y = next_pos_y % self.environment.height
             try:
-                target = self.environment.get(nextPosX, nextPosY)
-                if target == None:
-                    dests.append(d)
+                target = self.environment.get(next_pos_x, next_pos_y)
+                if target is None:
+                    destinations.append(d)
                 elif type(target) == Fish:
                     self.eat(sma)
                     self.environment.move(self)
@@ -53,34 +54,35 @@ class Shark(Fish):
                         child = self.clone()
                         child.agentId = sma.nextAgentId
                         sma.nextAgentId += 1
-                        child.posX, child.posY = oldX, oldY
-                        child.color = (253,108,158,255)
-                        self.environment.place(child, oldX, oldY)
+                        child.posX, child.posY = old_x, old_y
+                        child.color = (253, 108, 158, 255)
+                        self.environment.place(child, old_x, old_y)
                         sma.birthList.append(child)
                         self.breedTick = 0
                     return
             except IndexError as _:
                 pass
             directions.remove(d)
-        self.move(dests, sma)
+        self.move(destinations, sma)
 
-    def move(self, dests, sma):
-        if dests == []:
+    def move(self, destinations, sma):
+        if not destinations:
             return
-        oldX, oldY = self.posX, self.posY
+        old_x, old_y = self.posX, self.posY
 
-        (self.stepX, self.stepY) = random.choice(dests)
+        (self.stepX, self.stepY) = random.choice(destinations)
 
         self.environment.move(self)
         if self.breedTick >= self.breedTime:
             child = self.clone()
             child.agentId = sma.nextAgentId
             sma.nextAgentId += 1
-            child.posX, child.posY = oldX, oldY
-            child.color = (253,108,158,255)
-            self.environment.place(child, oldX, oldY)
+            child.posX, child.posY = old_x, old_y
+            child.color = (253, 108, 158, 255)
+            self.environment.place(child, old_x, old_y)
             sma.birthList.append(child)
             self.breedTick = 0
 
     def clone(self):
-        return Shark(self.agentId, self.environment, self.posX, self.posY, (253,108,158,255), self.breedTime, self.starveTime)
+        return Shark(self.agentId, self.environment, self.posX, self.posY, (253, 108, 158, 255), self.breedTime,
+                     self.starveTime)
