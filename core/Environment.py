@@ -3,12 +3,13 @@ import numpy as np
 from core.Agent import Agent
 from core.Error import TileNotEmptyError, BounceError
 
+
 class Environment:
 
-    def __init__(self, gridSizeX=100, gridSizeY=100, torus=False, color=(255,255,255)):
-        self.width = gridSizeX
-        self.height = gridSizeY
-        self.space = np.empty((gridSizeX, gridSizeY), dtype=Agent , order='F')
+    def __init__(self, grid_size_x=100, grid_size_y=100, torus=False, color=(255, 255, 255)):
+        self.width = grid_size_x
+        self.height = grid_size_y
+        self.space = np.empty((grid_size_x, grid_size_y), dtype=Agent, order='F')
         self.torus = torus
         self.color = color
     
@@ -21,7 +22,7 @@ class Environment:
         - x : the x position
         - y : the y position
         """
-        if self.space[x][y] == None:
+        if self.space[x][y] is None:
             self.space[x][y] = agent
         else:
             raise TileNotEmptyError()
@@ -36,21 +37,21 @@ class Environment:
         -----------
         - agent : the agent that tries to move
         """
-        nextPosX = agent.posX + agent.stepX
-        nextPosY = agent.posY + agent.stepY
+        next_pos_x = agent.posX + agent.stepX
+        next_pos_y = agent.posY + agent.stepY
 
         if self.torus:
-            nextPosX = nextPosX % self.width
-            nextPosY = nextPosY % self.height
+            next_pos_x = next_pos_x % self.width
+            next_pos_y = next_pos_y % self.height
         else:
-            if nextPosX < 0 or nextPosX >= self.width or nextPosY < 0 or nextPosY >= self.height:
+            if next_pos_x < 0 or next_pos_x >= self.width or next_pos_y < 0 or next_pos_y >= self.height:
                 raise BounceError()
         
-        if self.space[nextPosX][nextPosY] == None:
-            self.space[nextPosX][nextPosY] = agent
+        if self.space[next_pos_x][next_pos_y] is None:
+            self.space[next_pos_x][next_pos_y] = agent
             self.remove(agent.posX, agent.posY)
-            agent.posX = nextPosX
-            agent.posY = nextPosY
+            agent.posX = next_pos_x
+            agent.posY = next_pos_y
         else:
             raise BounceError()
 
