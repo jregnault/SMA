@@ -2,8 +2,9 @@ import random
 
 from particles.Particle import Particle
 
+
 class ParticleSMA:
-    def __init__(self, environment, view, nbParticles, scheduling, trace = False):
+    def __init__(self, environment, view, nb_particles, scheduling, trace=False):
         self.environment = environment
         self.view = view
         self.scheduling = scheduling
@@ -12,20 +13,20 @@ class ParticleSMA:
         self.agentList = []
         self.observers = []
 
-        for i in range(0,nbParticles):
-            stepX = 0
-            stepY = 0
-            while stepX == 0 and stepY == 0:
-                stepX = random.randint(-1,1)
-                stepY = random.randint(-1,1)
+        for i in range(0, nb_particles):
+            step_x = 0
+            step_y = 0
+            while step_x == 0 and step_y == 0:
+                step_x = random.randint(-1, 1)
+                step_y = random.randint(-1, 1)
             self.agentList.append(
                 Particle(
                     i,
                     environment,
-                    random.randint(0,environment.width - 1),
-                    random.randint(0,environment.height - 1),
-                    stepX,
-                    stepY)
+                    random.randint(0, environment.width - 1),
+                    random.randint(0, environment.height - 1),
+                    step_x,
+                    step_y)
             )
     
     def register(self, observer):
@@ -35,7 +36,7 @@ class ParticleSMA:
         for o in self.observers:
             o.update(self)
     
-    def runTurn(self):
+    def run_turn(self):
         if self.scheduling == "random":
             a = random.choice(self.agentList)
             a.decide(self)
