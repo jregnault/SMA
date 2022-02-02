@@ -22,7 +22,7 @@ def run(sma, config):
     if nbTours == 0:
         stay_alive = True
     while stay_alive or tick < nbTours:
-        sma.runTurn()
+        sma.run_turn()
         tick += 1
         print("Tick;" + str(tick))
 
