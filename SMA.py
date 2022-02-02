@@ -12,17 +12,18 @@ from core.View import View
 from particles.ParticleSMA import ParticleSMA
 from wator.WaTorSMA import WaTorSMA
     
-def run(sma, config):
-    sma.notify()
-    nbTours = config.getint("simulation","nbticks")
-    delay = config.getfloat("simulation","delay")
-    refresh = config.getint("simulation","refresh")
+
+def run(simulation, configuration):
+    simulation.notify()
+    nb_tours = configuration.getint("simulation", "nb_ticks")
+    delay = configuration.getfloat("simulation", "delay")
+    refresh = configuration.getint("simulation", "refresh")
     stay_alive = False
     tick = 0
-    if nbTours == 0:
+    if nb_tours == 0:
         stay_alive = True
-    while stay_alive or tick < nbTours:
-        sma.run_turn()
+    while stay_alive or tick < nb_tours:
+        simulation.run_turn()
         tick += 1
         print("Tick;" + str(tick))
 
@@ -31,8 +32,9 @@ def run(sma, config):
                 stay_alive = False
                     
         time.sleep(delay)
-        if (tick % refresh == 0):
-            sma.notify()
+        if tick % refresh == 0:
+            simulation.notify()
+
 
 if __name__ == "__main__":
     LOG_FORMAT = "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s"
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "system",
         nargs='?',
-        choices=["particles","wator"],
+        choices=["particles", "wator"],
         help="The simulation to start. Can be particles or wator"
     )
 
@@ -52,20 +54,20 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read("config.ini")
 
-    gridSizeX = config.getint("environment","gridSizeX")
-    gridSizeY = config.getint("environment","gridSizeY")
+    gridSizeX = config.getint("environment", "grid_size_x")
+    gridSizeY = config.getint("environment", "grid_size_y")
 
     environment = Environment(
         gridSizeX,
         gridSizeY,
-        config.getboolean("environment","torus")
+        config.getboolean("environment", "torus")
     )
 
     if args.system == "wator":
-        environment.color = (0,0,255)
+        environment.color = (0, 0, 255)
 
-    grid = config.getboolean("view","grid")
-    boxSize = config.getint("view","boxsize")
+    grid = config.getboolean("view", "grid")
+    boxSize = config.getint("view", "box_size")
 
     view = View(
         environment,
@@ -73,18 +75,18 @@ if __name__ == "__main__":
         grid
     )
 
-    seed = config.getint("simulation","seed")
+    seed = config.getint("simulation", "seed")
     if seed != 0:
         random.seed(seed)
 
-    scheduling = config.get("simulation","scheduling")
-    trace = config.getboolean("simulation","trace")
+    scheduling = config.get("simulation", "scheduling")
+    trace = config.getboolean("simulation", "trace")
 
     if args.system == "particles":
         sma = ParticleSMA(
             environment,
             view,
-            config.getint("particles","nbparticles"),
+            config.getint("particles", "nb_particles"),
             scheduling,
             trace
         )
@@ -94,11 +96,11 @@ if __name__ == "__main__":
             view,
             scheduling,
             trace,
-            config.getint("wator","nbfishes"),
-            config.getint("wator","fishesbreedtime"),
-            config.getint("wator","nbsharks"),
-            config.getint("wator","sharksbreedtime"),
-            config.getint("wator","sharksstarvetime")
+            config.getint("wator", "nb_fishes"),
+            config.getint("wator", "fishes_breed_time"),
+            config.getint("wator", "nb_sharks"),
+            config.getint("wator", "sharks_breed_time"),
+            config.getint("wator", "sharks_starve_time")
         )
     sma.register(view)
     run(sma, config)
