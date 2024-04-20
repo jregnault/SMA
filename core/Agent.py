@@ -1,10 +1,23 @@
 import pygame
 
+import core
+
 
 class Agent:
     """Abstract agent"""
 
-    def __init__(self, agent_id, environment, pos_x=0, pos_y=0, step_x=0, step_y=0, color=(150, 150, 150, 255)):
+    def __init__(self, agent_id: int, environment: core.Environment, pos_x: int = 0, pos_y: int = 0, step_x: int = 0,
+                 step_y: int = 0, color: tuple[int, int, int, int] = (150, 150, 150, 255)):
+        """Creates a new agent
+        Parameters:
+            agent_id : The unique identifier for the agent.
+            environment : The environment in which the agent is.
+            pos_x : The agent's position on the X axis of the environment. Default to 0.
+            pos_y : The agent's position on the Y axis of the environment. Default to 0.
+            step_x : The distance on the X axis the agent moves every turn. Default to 0.
+            step_y : The distance on the Y axis the agent moves every turn. Default to 0.
+            color : The agent's color.
+        """
         self.agentId = agent_id
         self.environment = environment
         self.posX = pos_x
@@ -13,7 +26,7 @@ class Agent:
         self.stepY = step_y
         self.color = color
         self.isAlive = True
-    
+
     def die(self, sma):
         """make the agent die"""
         self.isAlive = False
@@ -21,7 +34,7 @@ class Agent:
         self.environment.remove(self.posX, self.posY)
         if sma.trace:
             print("Agent;" + str(self.agentId) + ";" + str(self.posX) + ";" + str(self.posY) + ";" + "0")
-    
+
     def decide(self, sma):
         pass
 
