@@ -1,14 +1,26 @@
 import logging
 
 from core.Agent import Agent
+from core.Environment import Environment
 from core.Error import BounceError
 
 
 class Particle(Agent):
     """A simple ball that bounce against walls and other balls"""
 
-    def __init__(self, environment, pos_x=0, pos_y=0, step_x=0, step_y=0, color=(150, 150, 150, 255)):
-        super().__init__(environment, pos_x, pos_y, step_x, step_y, color)
+    def __init__(self, agent_id: int, environment: Environment, pos_x: int = 0, pos_y: int = 0, step_x: int = 0,
+                 step_y: int = 0, color: [int, int, int, int] = (150, 150, 150, 255)) -> None:
+        """Creates a particle
+        Parameters:
+            agent_id: The particle's unique id
+            environment: The environment to put the particle in
+            pos_x: The initial X position of the particle in the environment
+            pos_y: The initial Y position of the particle in the environment
+            pos_x: The initial X translation of the particle in the environment
+            pos_y: The initial Y translation of the particle in the environment
+            color: The color of the particle
+        """
+        super().__init__(agent_id, environment, pos_x, pos_y, step_x, step_y, color)
 
     def will_hit_a_wall(self):
         """Return True if the next move is illegal in terms of boundaries,

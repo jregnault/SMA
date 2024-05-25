@@ -1,9 +1,18 @@
 import pygame
 
+from core.Environment import Environment
+
 
 class View:
+    """Represents the window view to have a graphic representation of the simulation."""
     
-    def __init__(self, environment, box_size=1, grid=False):
+    def __init__(self, environment: Environment, box_size: int = 1, grid: bool = False) -> None:
+        """Creates a new view
+        Parameters:
+            environment: the environment to graphically represent
+            box_size: the size in pixels of a cell
+            grid: whether to show the grid on the view
+        """
         self.environment = environment
         self.boxSize = box_size
         self.grid = grid
@@ -21,14 +30,15 @@ class View:
         if grid:
             self.draw_grid()
     
-    def draw_background(self):
+    def draw_background(self) -> None:
+        """Draws the environment background on the screen."""
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
         background.fill(self.environment.color)
         self.screen.blit(background, (0, 0))
 
-    def draw_grid(self):
-        """Add a grid to the view."""
+    def draw_grid(self) -> None:
+        """Draws the grid on the screen."""
         grid_surface = pygame.Surface(self.screen.get_size())
         grid_surface = grid_surface.convert()
         grid_surface.fill(self.environment.color)
@@ -45,7 +55,8 @@ class View:
         
         self.screen.blit(grid_surface, (0, 0))
     
-    def update(self, observable):
+    def update(self) -> None:
+        """Renders the current state of the view on screen."""
         if self.grid:
             self.draw_grid()
         else:
